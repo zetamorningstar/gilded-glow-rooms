@@ -147,7 +147,7 @@ function Index() {
       <footer id="iletisim" className="px-5 py-16 md:px-12 md:py-20 lg:px-20">
         <div className="flex flex-col justify-between gap-12 md:flex-row md:items-end">
           <div><p className="mb-4 text-xs uppercase text-primary">Yaşam alanınızı birlikte kuralım</p><h2 className="font-display text-5xl md:text-7xl">Bizimle tanışın.</h2></div>
-          <Button asChild variant="goldOutline" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto"><a href="mailto:info@nilmobilya.com">İletişime geç <ArrowUpRight /></a></Button>
+          <Button asChild variant="goldOutline" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto"><a href="#koleksiyon">Koleksiyonu incele <ArrowUpRight /></a></Button>
         </div>
         <div className="mt-16 flex flex-col gap-3 border-t border-border pt-6 text-[10px] uppercase text-muted-foreground md:flex-row md:justify-between"><span>© 2026 Nil Mobilya</span><span>Modern · Nitelikli · Zamansız</span></div>
       </footer>
