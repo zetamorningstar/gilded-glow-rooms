@@ -4,6 +4,7 @@ import type { PointerEvent } from "react";
 
 import type { Collection } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
+import { useHoverPreview } from "@/components/hover-preview";
 
 function handleDepth(event: PointerEvent<HTMLElement>) {
   if (event.pointerType === "touch") return;
@@ -22,8 +23,10 @@ function resetDepth(event: PointerEvent<HTMLElement>) {
 }
 
 export function CollectionDetail({ collection }: { collection: Collection }) {
+  const preview = useHoverPreview(2500);
   return (
     <main className="min-h-screen bg-background text-foreground">
+      {preview.overlay}
       <header className="flex h-20 items-center justify-between border-b border-foreground/15 px-5 md:h-24 md:px-12 lg:px-20">
         <Link to="/" aria-label="Nil Mobilya ana sayfa" className="font-display text-2xl font-medium uppercase text-foreground md:text-3xl">
           Nil <span className="text-primary">Mobilya</span>
@@ -88,7 +91,17 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
               <div
                 className="overflow-hidden bg-surface-raised aspect-[4/5]"
                 onPointerMove={handleDepth}
-                onPointerLeave={resetDepth}
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "touch") return;
+                  preview.open({
+                    src: product.image,
+                    alt: `Nil Mobilya ${collection.title.toLocaleLowerCase("tr-TR")} koleksiyonu — ${product.name}`,
+                  });
+                }}
+                onPointerLeave={(event) => {
+                  resetDepth(event);
+                  preview.close();
+                }}
               >
                 <img
                   data-depth

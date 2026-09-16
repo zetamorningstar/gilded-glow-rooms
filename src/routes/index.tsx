@@ -5,6 +5,7 @@ import { useState, type PointerEvent } from "react";
 import heroImage from "@/assets/nil-hero.jpg";
 import { collections } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
+import { useHoverPreview } from "@/components/hover-preview";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const preview = useHoverPreview(2500);
 
   const handleDepth = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType === "touch") return;
@@ -41,6 +43,7 @@ function Index() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      {preview.overlay}
       <section
         className="relative flex min-h-[92svh] flex-col overflow-hidden border-b border-border"
         onPointerMove={handleDepth}
@@ -115,8 +118,19 @@ function Index() {
                 className="block cursor-pointer"
                 aria-label={`${item.title} koleksiyonunu görüntüle`}
               >
-                <div className={`overflow-hidden bg-surface-raised ${index === 0 ? "aspect-[5/4] lg:aspect-[4/5]" : "aspect-[4/5]"}`} onPointerMove={handleDepth} onPointerLeave={resetDepth}>
-                  <img data-depth src={item.hero} alt={`Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu`} width={index === 0 ? 1024 : 1024} height={1280} loading="lazy" className="image-depth h-full w-full object-cover saturate-[.8] group-hover:saturate-100" />
+                <div
+                  className={`overflow-hidden bg-surface-raised ${index === 0 ? "aspect-[5/4] lg:aspect-[4/5]" : "aspect-[4/5]"}`}
+                  onPointerMove={handleDepth}
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "touch") return;
+                    preview.open({ src: item.hero, alt: `Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu` });
+                  }}
+                  onPointerLeave={(event) => {
+                    resetDepth(event);
+                    preview.close();
+                  }}
+                >
+                  <img data-depth src={item.hero} alt={`Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu`} width={1024} height={1280} loading="lazy" className="image-depth h-full w-full object-cover saturate-[.8] group-hover:saturate-100" />
                 </div>
                 <div className="flex items-start justify-between border-b border-border py-5 transition-colors group-hover:border-primary/60">
                   <div><span className="text-[10px] text-primary">{item.number}</span><h3 className="mt-1 font-display text-3xl transition-colors group-hover:text-primary">{item.title}</h3><p className="mt-1 text-xs text-muted-foreground">{item.note}</p></div>
