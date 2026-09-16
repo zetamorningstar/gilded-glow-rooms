@@ -1,3 +1,4 @@
+// ============= Full file contents =============
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type PreviewInput = {
@@ -12,9 +13,7 @@ type PreviewState = PreviewInput & {
   top: number;
   width: number;
   height: number;
-  tx: number;
-  ty: number;
-  scale: number;
+  zoom: number;
   captionLeft: number;
   captionTop: number;
   captionWidth: number;
@@ -25,39 +24,29 @@ type PreviewState = PreviewInput & {
 
 const CAPTION_WIDTH = 230;
 const CAPTION_GAP = 26;
+// How close the piece moves in. Kept small — a gentle trim-in, not a blow-up.
+const DESIRED_ZOOM = 1.22;
 
-function buildState(input: PreviewInput, rect: DOMRect): PreviewState {
+function buildState(
+  input: PreviewInput,
+  rect: DOMRect,
+  naturalScale: number,
+): PreviewState {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-  const margin = 24;
 
-  const maxScale = Math.min(
-    2.4,
-    (vh - margin * 2) / rect.height,
-    (vw - margin * 2 - CAPTION_WIDTH - CAPTION_GAP) / rect.width,
+  // Never zoom past the photo's own resolution — that is what keeps it sharp.
+  const zoom = Math.max(1, Math.min(DESIRED_ZOOM, naturalScale));
+
+  // The box stays exactly where the furniture sits; only the image inside
+  // trims in (edges crop away), so the piece appears to lean closer.
+  const captionLeft = Math.min(
+    rect.right + CAPTION_GAP,
+    vw - CAPTION_WIDTH - 12,
   );
-  const scale = Math.max(1.25, Math.min(2.4, maxScale));
-
-  const fw = rect.width * scale;
-  const fh = rect.height * scale;
-
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-
-  // Keep the zoom anchored near the furniture, only nudging it back on screen.
-  const minCx = margin + fw / 2;
-  const maxCx = vw - margin - fw / 2 - CAPTION_WIDTH - CAPTION_GAP;
-  const minCy = margin + fh / 2;
-  const maxCy = vh - margin - fh / 2;
-
-  const targetCx = maxCx > minCx ? Math.min(Math.max(cx, minCx), maxCx) : (minCx + maxCx) / 2;
-  const targetCy = maxCy > minCy ? Math.min(Math.max(cy, minCy), maxCy) : (minCy + maxCy) / 2;
-
-  const tx = targetCx - cx;
-  const ty = targetCy - cy;
-
-  const finalLeft = targetCx - fw / 2;
-  const finalTop = targetCy - fh / 2;
+  const connectorLeft = rect.right;
+  const connectorWidth = Math.max(0, captionLeft - CAPTION_GAP - rect.right);
+  const captionTop = rect.top + Math.min(rect.height * 0.22, 140);
 
   return {
     ...input,
@@ -65,19 +54,38 @@ function buildState(input: PreviewInput, rect: DOMRect): PreviewState {
     top: rect.top,
     width: rect.width,
     height: rect.height,
-    tx,
-    ty,
-    scale,
-    captionLeft: finalLeft + fw + CAPTION_GAP,
-    captionTop: finalTop + Math.min(fh * 0.22, 140),
+    zoom,
+    captionLeft,
+    captionTop: Math.min(captionTop, vh - 160),
     captionWidth: CAPTION_WIDTH,
-    connectorLeft: finalLeft + fw,
-    connectorWidth: CAPTION_GAP,
-    connectorTop: finalTop + Math.min(fh * 0.22, 140) + 18,
+    connectorLeft,
+    connectorWidth,
+    connectorTop: Math.min(captionTop, vh - 160) + 18,
   };
 }
 
-export function useHoverPreview(delay = 600) {
+// Read the photo's real pixel size so we can cap the zoom at native
+// resolution. Falls back to the desired zoom if the size can't be read.
+function measureNaturalScale(
+  src: string,
+  rect: DOMRect,
+): Promise<number> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const done = (value: number) => resolve(value);
+    img.onload = () => {
+      const byWidth = img.naturalWidth / rect.width;
+      const byHeight = img.naturalHeight / rect.height;
+      done(Math.min(byWidth, byHeight));
+    };
+    img.onerror = () => done(DESIRED_ZOOM);
+    img.src = src;
+    // Safety net so a slow network never blocks the preview.
+    setTimeout(() => done(DESIRED_ZOOM), 2500);
+  });
+}
+
+export function useHoverPreview(delay = 1100) {
   const [state, setState] = useState<PreviewState | null>(null);
   const [active, setActive] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -94,8 +102,12 @@ export function useHoverPreview(delay = 600) {
       clear();
       timer.current = setTimeout(() => {
         const rect = element.getBoundingClientRect();
-        setState(buildState(input, rect));
-        requestAnimationFrame(() => requestAnimationFrame(() => setActive(true)));
+        measureNaturalScale(input.src, rect).then((naturalScale) => {
+          setState(buildState(input, rect, naturalScale));
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => setActive(true)),
+          );
+        });
       }, delay);
     },
     [clear, delay],
@@ -120,6 +132,8 @@ export function useHoverPreview(delay = 600) {
         }}
       />
 
+      {/* Fixed footprint at the furniture's own pixels; the photo inside
+          trims toward the center so the piece appears to move closer. */}
       <div
         style={{
           position: "absolute",
@@ -127,11 +141,10 @@ export function useHoverPreview(delay = 600) {
           top: state.top,
           width: state.width,
           height: state.height,
-          transform: active
-            ? `translate3d(${state.tx}px, ${state.ty}px, 0) scale(${state.scale})`
-            : "translate3d(0,0,0) scale(1)",
-          transition: "transform 420ms cubic-bezier(.22,1,.36,1)",
-          willChange: "transform",
+          overflow: "hidden",
+          boxShadow: active ? "0 30px 70px oklch(0 0 0 / 50%)" : "none",
+          transition: "box-shadow 420ms ease",
+          willChange: "contents",
         }}
       >
         <img
@@ -139,8 +152,9 @@ export function useHoverPreview(delay = 600) {
           alt={state.alt}
           className="h-full w-full object-cover"
           style={{
-            boxShadow: active ? "0 40px 90px oklch(0 0 0 / 55%)" : "none",
-            transition: "box-shadow 420ms ease",
+            transform: active ? `scale(${state.zoom})` : "scale(1)",
+            transition: "transform 420ms cubic-bezier(.22,1,.36,1)",
+            willChange: "transform",
           }}
         />
       </div>
@@ -154,7 +168,8 @@ export function useHoverPreview(delay = 600) {
           height: 1,
           background: "var(--color-primary)",
           opacity: active ? 0.8 : 0,
-          transition: "width 340ms cubic-bezier(.22,1,.36,1) 120ms, opacity 240ms linear 120ms",
+          transition:
+            "width 340ms cubic-bezier(.22,1,.36,1) 120ms, opacity 240ms linear 120ms",
         }}
       />
 
@@ -166,7 +181,8 @@ export function useHoverPreview(delay = 600) {
           width: state.captionWidth,
           opacity: active ? 1 : 0,
           transform: active ? "translate3d(0,0,0)" : "translate3d(-8px,0,0)",
-          transition: "opacity 300ms linear 180ms, transform 380ms cubic-bezier(.22,1,.36,1) 180ms",
+          transition:
+            "opacity 300ms linear 180ms, transform 380ms cubic-bezier(.22,1,.36,1) 180ms",
         }}
       >
         <div className="bg-black/90 px-4 py-3 shadow-xl">
