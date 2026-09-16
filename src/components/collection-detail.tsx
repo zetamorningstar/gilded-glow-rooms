@@ -69,9 +69,9 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           </p>
           <div className="flex items-end justify-start md:justify-end">
             <Button asChild variant="goldOutline" size="lg" className="h-12 px-6 text-xs uppercase">
-              <Link to="/" hash="iletisim" className="h-12 px-6 text-xs uppercase inline-flex items-center gap-2 border border-primary/60 text-primary hover:bg-primary hover:text-primary-foreground transition-colors uppercase">
-                Bu koleksiyonu yerinizde görün <ArrowUpRight />
-              </Link>
+            <Button asChild variant="goldOutline" size="lg" className="h-12 px-6 text-xs uppercase">
+              <Link to="/" hash="iletisim">Bu koleksiyonu yerinizde görün <ArrowUpRight /></Link>
+            </Button>
             </Button>
           </div>
         </div>
@@ -133,9 +133,9 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
             </div>
           </div>
           <Button asChild variant="gold" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto">
-            <Link to="/" hash="koleksiyon" className="inline-flex items-center gap-2 border border-primary/60 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-6 text-xs uppercase font-medium">
-              Tüm koleksiyon <ArrowUpRight />
-            </Link>
+          <Button asChild variant="gold" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto">
+            <Link to="/" hash="koleksiyon">Tüm koleksiyon <ArrowUpRight /></Link>
+          </Button>
           </Button>
         </div>
         <div className="mt-16 flex flex-col gap-3 border-t border-border pt-6 text-[10px] uppercase text-muted-foreground md:flex-row md:justify-between">
