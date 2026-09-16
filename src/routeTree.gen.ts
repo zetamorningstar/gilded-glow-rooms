@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as KoleksiyonSlugRouteImport } from './routes/koleksiyon.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KoleksiyonSlugRoute = KoleksiyonSlugRouteImport.update({
+  id: '/koleksiyon/$slug',
+  path: '/koleksiyon/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/koleksiyon/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/koleksiyon/$slug'
+  id: '__root__' | '/' | '/koleksiyon/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KoleksiyonSlugRoute: typeof KoleksiyonSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/koleksiyon/$slug': {
+      id: '/koleksiyon/$slug'
+      path: '/koleksiyon/$slug'
+      fullPath: '/koleksiyon/$slug'
+      preLoaderRoute: typeof KoleksiyonSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KoleksiyonSlugRoute: KoleksiyonSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

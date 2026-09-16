@@ -1,11 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowUpRight, Menu, X } from "lucide-react";
 import { useState, type PointerEvent } from "react";
 
 import heroImage from "@/assets/nil-hero.jpg";
-import chairImage from "@/assets/nil-chair.jpg";
-import sofaImage from "@/assets/nil-sofa.jpg";
-import diningImage from "@/assets/nil-dining.jpg";
+import { collections } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -21,12 +19,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const collections = [
-  { number: "01", title: "Oturma", note: "Rahatlığın yalın formu", image: sofaImage, size: "wide" },
-  { number: "02", title: "Berjer", note: "İmza niteliğinde detaylar", image: chairImage, size: "tall" },
-  { number: "03", title: "Yemek", note: "Bir araya gelmenin zarafeti", image: diningImage, size: "tall" },
-] as const;
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -116,14 +108,21 @@ function Index() {
         </div>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12">
           {collections.map((item, index) => (
-            <article key={item.title} className={item.size === "wide" ? "group md:col-span-2 lg:col-span-6" : "group lg:col-span-3"}>
-              <div className={`overflow-hidden bg-surface-raised ${index === 0 ? "aspect-[5/4] lg:aspect-[4/5]" : "aspect-[4/5]"}`} onPointerMove={handleDepth} onPointerLeave={resetDepth}>
-                <img data-depth src={item.image} alt={`Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu`} width={index === 0 ? 1280 : 1024} height={index === 0 ? 1024 : 1280} loading="lazy" className="image-depth h-full w-full object-cover saturate-[.8] group-hover:saturate-100" />
-              </div>
-              <div className="flex items-start justify-between border-b border-border py-5">
-                <div><span className="text-[10px] text-primary">{item.number}</span><h3 className="mt-1 font-display text-3xl">{item.title}</h3><p className="mt-1 text-xs text-muted-foreground">{item.note}</p></div>
-                <ArrowUpRight className="mt-2 size-5 text-primary transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </div>
+            <article key={item.slug} className={item.number === "01" ? "group md:col-span-2 lg:col-span-6" : "group lg:col-span-3"}>
+              <Link
+                to="/koleksiyon/$slug"
+                params={{ slug: item.slug }}
+                className="block cursor-pointer"
+                aria-label={`${item.title} koleksiyonunu görüntüle`}
+              >
+                <div className={`overflow-hidden bg-surface-raised ${index === 0 ? "aspect-[5/4] lg:aspect-[4/5]" : "aspect-[4/5]"}`} onPointerMove={handleDepth} onPointerLeave={resetDepth}>
+                  <img data-depth src={item.hero} alt={`Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu`} width={index === 0 ? 1024 : 1024} height={1280} loading="lazy" className="image-depth h-full w-full object-cover saturate-[.8] group-hover:saturate-100" />
+                </div>
+                <div className="flex items-start justify-between border-b border-border py-5 transition-colors group-hover:border-primary/60">
+                  <div><span className="text-[10px] text-primary">{item.number}</span><h3 className="mt-1 font-display text-3xl transition-colors group-hover:text-primary">{item.title}</h3><p className="mt-1 text-xs text-muted-foreground">{item.note}</p></div>
+                  <ArrowUpRight className="mt-2 size-5 text-primary transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </div>
+              </Link>
             </article>
           ))}
         </div>

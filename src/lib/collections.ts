@@ -40,7 +40,7 @@ export const collections: Collection[] = [
     products: [
       { name: "Bulut Oturma Grubu", material: "Bouclé kumaş · Ceviz ayak", image: sofaImage },
       { name: "Modüler Köşe Takımı", material: "Yumuşak dokulu kumaş", image: sofaImageB },
-      { name: "Kavissiz Kadife Sofa", material: "Kadife · Pirinç detay", image: sofaImageC },
+      { name: "Kavisli Kadife Sofa", material: "Kadife · Pirinç detay", image: sofaImageC },
     ],
   },
   {
