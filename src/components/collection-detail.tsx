@@ -4,6 +4,7 @@ import type { PointerEvent } from "react";
 
 import type { Collection } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
+import { useHoverPreview } from "@/components/hover-preview";
 
 function handleDepth(event: PointerEvent<HTMLElement>) {
   if (event.pointerType === "touch") return;
