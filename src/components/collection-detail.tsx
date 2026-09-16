@@ -93,10 +93,15 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
                 onPointerMove={handleDepth}
                 onPointerEnter={(event) => {
                   if (event.pointerType === "touch") return;
-                  preview.open({
-                    src: product.image,
-                    alt: `Nil Mobilya ${collection.title.toLocaleLowerCase("tr-TR")} koleksiyonu — ${product.name}`,
-                  });
+                  preview.open(
+                    {
+                      src: product.image,
+                      alt: `Nil Mobilya ${collection.title.toLocaleLowerCase("tr-TR")} koleksiyonu — ${product.name}`,
+                      title: `0${index + 1} · ${product.name}`,
+                      lines: [product.material, `${collection.title} koleksiyonu · 2026`],
+                    },
+                    event.currentTarget,
+                  );
                 }}
                 onPointerLeave={(event) => {
                   resetDepth(event);
