@@ -23,7 +23,7 @@ function resetDepth(event: PointerEvent<HTMLElement>) {
 }
 
 export function CollectionDetail({ collection }: { collection: Collection }) {
-  const preview = useHoverPreview(2500);
+  const preview = useHoverPreview(600);
   return (
     <main className="min-h-screen bg-background text-foreground">
       {preview.overlay}
