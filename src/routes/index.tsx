@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const preview = useHoverPreview(2500);
+  const preview = useHoverPreview(600);
 
   const handleDepth = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType === "touch") return;
@@ -123,7 +123,15 @@ function Index() {
                   onPointerMove={handleDepth}
                   onPointerEnter={(event) => {
                     if (event.pointerType === "touch") return;
-                    preview.open({ src: item.hero, alt: `Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu` });
+                    preview.open(
+                      {
+                        src: item.hero,
+                        alt: `Nil Mobilya ${item.title.toLocaleLowerCase("tr-TR")} koleksiyonu`,
+                        title: `${item.number} · ${item.title}`,
+                        lines: [item.note, item.description],
+                      },
+                      event.currentTarget,
+                    );
                   }}
                   onPointerLeave={(event) => {
                     resetDepth(event);
