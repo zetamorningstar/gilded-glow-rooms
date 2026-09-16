@@ -23,7 +23,7 @@ function resetDepth(event: PointerEvent<HTMLElement>) {
 }
 
 export function CollectionDetail({ collection }: { collection: Collection }) {
-  const preview = useHoverPreview(2500);
+  const preview = useHoverPreview(600);
   return (
     <main className="min-h-screen bg-background text-foreground">
       {preview.overlay}
@@ -93,10 +93,15 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
                 onPointerMove={handleDepth}
                 onPointerEnter={(event) => {
                   if (event.pointerType === "touch") return;
-                  preview.open({
-                    src: product.image,
-                    alt: `Nil Mobilya ${collection.title.toLocaleLowerCase("tr-TR")} koleksiyonu — ${product.name}`,
-                  });
+                  preview.open(
+                    {
+                      src: product.image,
+                      alt: `Nil Mobilya ${collection.title.toLocaleLowerCase("tr-TR")} koleksiyonu — ${product.name}`,
+                      title: `0${index + 1} · ${product.name}`,
+                      lines: [product.material, `${collection.title} koleksiyonu · 2026`],
+                    },
+                    event.currentTarget,
+                  );
                 }}
                 onPointerLeave={(event) => {
                   resetDepth(event);
