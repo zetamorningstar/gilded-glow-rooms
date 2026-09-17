@@ -6,6 +6,7 @@ type PreviewInput = {
   alt: string;
   title: string;
   lines: string[];
+  action?: { label: string; onSelect: () => void };
 };
 
 type PreviewState = PreviewInput & {
