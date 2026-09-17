@@ -10,11 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiRoomComposeRouteImport } from './routes/api/room-compose'
+import { Route as ApiSpinFrameRouteImport } from './routes/api/spin-frame'
 import { Route as KoleksiyonSlugRouteImport } from './routes/koleksiyon.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRoomComposeRoute = ApiRoomComposeRouteImport.update({
+  id: '/api/room-compose',
+  path: '/api/room-compose',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpinFrameRoute = ApiSpinFrameRouteImport.update({
+  id: '/api/spin-frame',
+  path: '/api/spin-frame',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KoleksiyonSlugRoute = KoleksiyonSlugRouteImport.update({
@@ -25,27 +37,40 @@ const KoleksiyonSlugRoute = KoleksiyonSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/room-compose': typeof ApiRoomComposeRoute
+  '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/room-compose': typeof ApiRoomComposeRoute
+  '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/room-compose': typeof ApiRoomComposeRoute
+  '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/koleksiyon/$slug'
+  fullPaths: '/' | '/api/room-compose' | '/api/spin-frame' | '/koleksiyon/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/koleksiyon/$slug'
-  id: '__root__' | '/' | '/koleksiyon/$slug'
+  to: '/' | '/api/room-compose' | '/api/spin-frame' | '/koleksiyon/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/room-compose'
+    | '/api/spin-frame'
+    | '/koleksiyon/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiRoomComposeRoute: typeof ApiRoomComposeRoute
+  ApiSpinFrameRoute: typeof ApiSpinFrameRoute
   KoleksiyonSlugRoute: typeof KoleksiyonSlugRoute
 }
 
@@ -56,6 +81,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/room-compose': {
+      id: '/api/room-compose'
+      path: '/api/room-compose'
+      fullPath: '/api/room-compose'
+      preLoaderRoute: typeof ApiRoomComposeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spin-frame': {
+      id: '/api/spin-frame'
+      path: '/api/spin-frame'
+      fullPath: '/api/spin-frame'
+      preLoaderRoute: typeof ApiSpinFrameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/koleksiyon/$slug': {
@@ -70,6 +109,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiRoomComposeRoute: ApiRoomComposeRoute,
+  ApiSpinFrameRoute: ApiSpinFrameRoute,
   KoleksiyonSlugRoute: KoleksiyonSlugRoute,
 }
 export const routeTree = rootRouteImport
