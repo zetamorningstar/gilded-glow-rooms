@@ -23,7 +23,7 @@ function resetDepth(event: PointerEvent<HTMLElement>) {
 }
 
 export function CollectionDetail({ collection }: { collection: Collection }) {
-  const preview = useHoverPreview(600);
+  const preview = useHoverPreview();
   return (
     <main className="min-h-screen bg-background text-foreground">
       {preview.overlay}
@@ -72,9 +72,7 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           </p>
           <div className="flex items-end justify-start md:justify-end">
             <Button asChild variant="goldOutline" size="lg" className="h-12 px-6 text-xs uppercase">
-            <Button asChild variant="goldOutline" size="lg" className="h-12 px-6 text-xs uppercase">
               <Link to="/" hash="iletisim">Bu koleksiyonu yerinizde görün <ArrowUpRight /></Link>
-            </Button>
             </Button>
           </div>
         </div>
@@ -151,9 +149,7 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
             </div>
           </div>
           <Button asChild variant="gold" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto">
-          <Button asChild variant="gold" size="lg" className="h-12 self-start px-6 text-xs uppercase md:self-auto">
             <Link to="/" hash="koleksiyon">Tüm koleksiyon <ArrowUpRight /></Link>
-          </Button>
           </Button>
         </div>
         <div className="mt-16 flex flex-col gap-3 border-t border-border pt-6 text-[10px] uppercase text-muted-foreground md:flex-row md:justify-between">

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const preview = useHoverPreview(600);
+  const preview = useHoverPreview();
 
   const handleDepth = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType === "touch") return;
