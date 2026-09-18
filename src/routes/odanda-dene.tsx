@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { collections } from "@/lib/collections";
 import { fileToDataUrl, toDataUrl } from "@/lib/image-data";
 
-type Search = { parca?: string };
+type Search = { parca?: string | undefined };
 
 export const Route = createFileRoute("/odanda-dene")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    parca: typeof search.parca === "string" ? search.parca : undefined,
+    parca: typeof search["parca"] === "string" ? (search["parca"] as string) : undefined,
   }),
   head: () => ({
     meta: [
