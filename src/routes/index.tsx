@@ -55,7 +55,7 @@ function Index() {
           alt="Nil Mobilya modern oturma odası koleksiyonu"
           width={1920}
           height={1280}
-          className="image-depth absolute inset-0 h-full w-full object-cover object-[62%_center]"
+          className="image-depth absolute inset-0 h-full w-full object-contain object-center [--depth-scale:1]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--background)_0%,color-mix(in_oklab,var(--background)_82%,transparent)_34%,color-mix(in_oklab,var(--background)_20%,transparent)_72%,color-mix(in_oklab,var(--background)_48%,transparent)_100%)]" />
         <header className="relative z-20 flex h-20 items-center justify-between border-b border-foreground/15 px-5 md:h-24 md:px-12 lg:px-20">
