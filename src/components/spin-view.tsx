@@ -134,7 +134,7 @@ export function SpinView({ target, onClose }: { target: SpinTarget | null; onClo
                 src={frame}
                 alt={`${target.name} — ${frameIndex === 0 ? 0 : ANGLES[frameIndex - 1]} derece görünüm`}
                 draggable={false}
-                className="absolute inset-0 h-full w-full object-cover transition-opacity duration-200"
+                className="absolute inset-0 h-full w-full object-contain transition-opacity duration-200"
                 style={{ opacity: frameIndex === index ? 1 : 0 }}
               />
             ))}
