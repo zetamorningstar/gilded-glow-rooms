@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { collections } from "@/lib/collections";
 import { fileToDataUrl, toDataUrl } from "@/lib/image-data";
 
-type Search = { parca?: string };
+type Search = { parca?: string | undefined };
 
 export const Route = createFileRoute("/odanda-dene")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    parca: typeof search.parca === "string" ? search.parca : undefined,
+    parca: typeof search["parca"] === "string" ? (search["parca"] as string) : undefined,
   }),
   head: () => ({
     meta: [
@@ -29,10 +29,18 @@ export const Route = createFileRoute("/odanda-dene")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: TryAtHome;
+  component: TryAtHome,
 });
 
-const pieces = collections.flatMap((collection) =>
+type Piece = {
+  key: string;
+  name: string;
+  material: string;
+  image: string;
+  collection: string;
+};
+
+const pieces: Piece[] = collections.flatMap((collection) =>
   collection.products.map((product) => ({
     key: `${collection.slug}-${product.name}`,
     name: product.name,
@@ -45,7 +53,7 @@ const pieces = collections.flatMap((collection) =>
 function TryAtHome() {
   const { parca } = Route.useSearch();
   const initial = useMemo(
-    () => pieces.find((piece) => piece.name === parca) ?? pieces[0],
+    () => (pieces.find((piece) => piece.name === parca) ?? pieces[0]) as Piece,
     [parca],
   );
 

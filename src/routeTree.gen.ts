@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OdandaDeneRouteImport } from './routes/odanda-dene'
 import { Route as ApiRoomComposeRouteImport } from './routes/api/room-compose'
 import { Route as ApiSpinFrameRouteImport } from './routes/api/spin-frame'
 import { Route as KoleksiyonSlugRouteImport } from './routes/koleksiyon.$slug'
@@ -17,6 +18,11 @@ import { Route as KoleksiyonSlugRouteImport } from './routes/koleksiyon.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OdandaDeneRoute = OdandaDeneRouteImport.update({
+  id: '/odanda-dene',
+  path: '/odanda-dene',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiRoomComposeRoute = ApiRoomComposeRouteImport.update({
@@ -37,12 +43,14 @@ const KoleksiyonSlugRoute = KoleksiyonSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/odanda-dene': typeof OdandaDeneRoute
   '/api/room-compose': typeof ApiRoomComposeRoute
   '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/odanda-dene': typeof OdandaDeneRoute
   '/api/room-compose': typeof ApiRoomComposeRoute
   '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
@@ -50,18 +58,30 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/odanda-dene': typeof OdandaDeneRoute
   '/api/room-compose': typeof ApiRoomComposeRoute
   '/api/spin-frame': typeof ApiSpinFrameRoute
   '/koleksiyon/$slug': typeof KoleksiyonSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/room-compose' | '/api/spin-frame' | '/koleksiyon/$slug'
+  fullPaths:
+    | '/'
+    | '/odanda-dene'
+    | '/api/room-compose'
+    | '/api/spin-frame'
+    | '/koleksiyon/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/room-compose' | '/api/spin-frame' | '/koleksiyon/$slug'
+  to:
+    | '/'
+    | '/odanda-dene'
+    | '/api/room-compose'
+    | '/api/spin-frame'
+    | '/koleksiyon/$slug'
   id:
     | '__root__'
     | '/'
+    | '/odanda-dene'
     | '/api/room-compose'
     | '/api/spin-frame'
     | '/koleksiyon/$slug'
@@ -69,6 +89,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OdandaDeneRoute: typeof OdandaDeneRoute
   ApiRoomComposeRoute: typeof ApiRoomComposeRoute
   ApiSpinFrameRoute: typeof ApiSpinFrameRoute
   KoleksiyonSlugRoute: typeof KoleksiyonSlugRoute
@@ -81,6 +102,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/odanda-dene': {
+      id: '/odanda-dene'
+      path: '/odanda-dene'
+      fullPath: '/odanda-dene'
+      preLoaderRoute: typeof OdandaDeneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/room-compose': {
@@ -109,6 +137,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OdandaDeneRoute: OdandaDeneRoute,
   ApiRoomComposeRoute: ApiRoomComposeRoute,
   ApiSpinFrameRoute: ApiSpinFrameRoute,
   KoleksiyonSlugRoute: KoleksiyonSlugRoute,
