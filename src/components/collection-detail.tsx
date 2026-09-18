@@ -113,7 +113,7 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
                   width={1024}
                   height={1280}
                   loading={index === 0 ? "eager" : "lazy"}
-                  className="image-depth h-full w-full object-cover saturate-[.8] group-hover:saturate-100"
+                  className="image-depth h-full w-full object-contain [--depth-scale:1] saturate-[.8] group-hover:saturate-100"
                 />
               </div>
               <div className="flex items-start justify-between border-b border-border py-5">
