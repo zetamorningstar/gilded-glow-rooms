@@ -203,7 +203,7 @@ function TryAtHome() {
                         piece.key === selected.key ? "var(--color-primary)" : "var(--color-border)",
                     }}
                   >
-                    <img src={piece.image} alt={piece.name} className="h-full w-full object-cover" />
+                    <img src={piece.image} alt={piece.name} className="h-full w-full object-contain" />
                   </span>
                   <span className="mt-2 block text-[11px] leading-4 text-foreground/80">
                     {piece.name}

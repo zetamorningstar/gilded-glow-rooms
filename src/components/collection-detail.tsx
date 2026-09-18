@@ -50,7 +50,7 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           alt={collection.heroAlt}
           width={1024}
           height={1280}
-          className="image-depth absolute inset-0 h-full w-full object-cover"
+          className="image-depth absolute inset-0 h-full w-full object-contain [--depth-scale:1]"
           style={{ objectPosition: collection.heroFocus }}
         />
         <div className="absolute inset-0 bg-[linear-gradient(0deg,var(--background)_4%,color-mix(in_oklab,var(--background)_55%,transparent)_45%,color-mix(in_oklab,var(--background)_18%,transparent)_100%)]" />

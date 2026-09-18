@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Mail, Menu, Phone, X } from "lucide-react";
 import { useState, type PointerEvent } from "react";
 
 import heroImage from "@/assets/nil-hero.jpg";
@@ -55,7 +55,7 @@ function Index() {
           alt="Nil Mobilya modern oturma odası koleksiyonu"
           width={1920}
           height={1280}
-          className="image-depth absolute inset-0 h-full w-full object-cover object-[62%_center]"
+          className="image-depth absolute inset-0 h-full w-full object-contain object-center [--depth-scale:1]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--background)_0%,color-mix(in_oklab,var(--background)_82%,transparent)_34%,color-mix(in_oklab,var(--background)_20%,transparent)_72%,color-mix(in_oklab,var(--background)_48%,transparent)_100%)]" />
         <header className="relative z-20 flex h-20 items-center justify-between border-b border-foreground/15 px-5 md:h-24 md:px-12 lg:px-20">
@@ -161,6 +161,30 @@ function Index() {
           <div className="max-w-lg">
             <span className="font-display text-7xl text-primary/45">N</span>
             <p className="mt-8 text-sm font-light leading-7 text-ink-soft md:text-base">Her parçayı geçici eğilimlerden uzak, günlük hayatla birlikte güzelleşecek bir obje olarak ele alıyoruz. Malzemeye saygı, dengeli oranlar ve incelikli işçilik tasarımlarımızın temelini oluşturuyor.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-border px-5 py-16 md:px-12 md:py-24 lg:px-20">
+        <div className="grid border border-primary/30 bg-surface-raised md:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.6fr)]">
+          <div className="border-b border-border p-7 md:border-b-0 md:border-r md:p-12 lg:p-16">
+            <p className="mb-4 text-[10px] font-semibold uppercase text-primary">Özel üretim</p>
+            <h2 className="max-w-2xl font-display text-4xl leading-tight md:text-6xl">
+              Size özel, seçkin ölçekte üretim.
+            </h2>
+            <p className="mt-6 max-w-xl text-sm font-light leading-7 text-ink-soft md:text-base">
+              Bireysel müşteriler için yalnızca yüksek segment özel tasarımlar veya adetli üretim projeleri kabul ediyoruz. Aradığınız çalışma bu kapsama uyuyorsa bizimle iletişime geçin.
+            </p>
+          </div>
+          <div className="flex flex-col justify-end gap-4 p-7 md:p-10 lg:p-12">
+            <p className="text-xs uppercase text-muted-foreground">Özel proje hattı</p>
+            <Button asChild variant="gold" size="lg" className="h-12 w-full justify-start px-5 text-xs uppercase">
+              <a href="tel:+902120000000"><Phone className="size-4" /> 0 (212) 000 00 00</a>
+            </Button>
+            <Button asChild variant="goldOutline" size="lg" className="h-12 w-full justify-start px-5 text-xs lowercase">
+              <a href="mailto:ozel@nilmobilya.com"><Mail className="size-4" /> ozel@nilmobilya.com</a>
+            </Button>
+            <p className="text-[10px] leading-5 text-muted-foreground">Prototip iletişim bilgileri</p>
           </div>
         </div>
       </section>
