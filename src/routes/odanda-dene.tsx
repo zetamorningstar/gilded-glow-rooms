@@ -53,7 +53,7 @@ const pieces: Piece[] = collections.flatMap((collection) =>
 function TryAtHome() {
   const { parca } = Route.useSearch();
   const initial = useMemo(
-    () => pieces.find((piece) => piece.name === parca) ?? pieces[0],
+    () => (pieces.find((piece) => piece.name === parca) ?? pieces[0]) as Piece,
     [parca],
   );
 
