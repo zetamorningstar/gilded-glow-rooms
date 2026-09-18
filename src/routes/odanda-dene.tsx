@@ -29,7 +29,7 @@ export const Route = createFileRoute("/odanda-dene")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: TryAtHome;
+  component: TryAtHome,
 });
 
 const pieces = collections.flatMap((collection) =>
