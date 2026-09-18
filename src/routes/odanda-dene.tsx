@@ -32,7 +32,15 @@ export const Route = createFileRoute("/odanda-dene")({
   component: TryAtHome,
 });
 
-const pieces = collections.flatMap((collection) =>
+type Piece = {
+  key: string;
+  name: string;
+  material: string;
+  image: string;
+  collection: string;
+};
+
+const pieces: Piece[] = collections.flatMap((collection) =>
   collection.products.map((product) => ({
     key: `${collection.slug}-${product.name}`,
     name: product.name,
