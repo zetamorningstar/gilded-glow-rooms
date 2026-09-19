@@ -6,6 +6,9 @@ import heroImage from "@/assets/nil-hero.jpg";
 import { collections } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
 import { useHoverPreview } from "@/components/hover-preview";
+import { ReviewsMarquee } from "@/components/reviews-marquee";
+
+const galleryItems = collections.flatMap((collection) => collection.products);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,7 +45,7 @@ function Index() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="gold-flakes min-h-screen bg-background text-foreground">
       {preview.overlay}
       <section
         className="relative flex min-h-[92svh] flex-col overflow-hidden border-b border-border"
@@ -149,6 +152,38 @@ function Index() {
           ))}
         </div>
       </section>
+
+      <section aria-label="Atölye ve detay görselleri" className="border-t border-border px-5 pb-20 md:px-12 lg:px-20">
+        <div className="mb-10 flex items-end justify-between border-b border-border pb-6">
+          <div>
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">Detaylar</p>
+            <h2 className="font-display text-4xl md:text-6xl">Malzeme ve Doku</h2>
+          </div>
+          <span className="hidden text-xs text-muted-foreground md:block">Ceviz · Bouclé · Kadife · Pirinç</span>
+        </div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          {galleryItems.map((item, index) => (
+            <figure
+              key={item.image}
+              className={`group overflow-hidden bg-surface-raised ${index % 5 === 0 ? "col-span-2 aspect-[4/3] lg:col-span-2" : "aspect-[4/5]"}`}
+              onPointerMove={handleDepth}
+              onPointerLeave={resetDepth}
+            >
+              <img
+                data-depth
+                src={item.image}
+                alt={`Nil Mobilya detay — ${item.name}`}
+                width={1024}
+                height={1280}
+                loading="lazy"
+                className="image-depth h-full w-full object-contain [--depth-scale:1] saturate-[.8] group-hover:saturate-100"
+              />
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <ReviewsMarquee />
 
       <section id="hikaye" className="grid border-y border-border md:grid-cols-2">
         <div className="flex min-h-[420px] items-center px-5 py-20 md:px-12 lg:px-20">
