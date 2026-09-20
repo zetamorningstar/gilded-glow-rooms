@@ -171,8 +171,8 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Uzun, ince altın çizgi dokusu — sayfanın siyahlığını yumuşatır */
-@utility gold-flakes {
+/* Merkezden dışarı açılan, düşük kontrastlı ebru-su yüzeyi */
+@utility marble-water {
   position: relative;
   isolation: isolate;
 
@@ -182,32 +182,121 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image:
-      repeating-linear-gradient(
-        118deg,
-        transparent 0px,
-        transparent 46px,
-        color-mix(in oklab, var(--gold-bright) 12%, transparent) 46px,
-        color-mix(in oklab, var(--gold-bright) 12%, transparent) 47px,
-        transparent 47px,
-        transparent 132px
-      ),
-      repeating-linear-gradient(
-        62deg,
-        transparent 0px,
-        transparent 180px,
-        color-mix(in oklab, var(--gold-bright) 7%, transparent) 180px,
-        color-mix(in oklab, var(--gold-bright) 7%, transparent) 181px,
-        transparent 181px,
-        transparent 420px
-      ),
-      radial-gradient(
-        120% 80% at 70% 0%,
-        color-mix(in oklab, var(--gold-bright) 9%, transparent) 0%,
-        transparent 60%
-      );
-    mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    background:
+      radial-gradient(ellipse 68% 16% at 50% 21%, color-mix(in oklab, var(--foreground) 7%, transparent) 0 15%, transparent 44%),
+      radial-gradient(ellipse 82% 22% at 48% 24%, transparent 45%, color-mix(in oklab, var(--foreground) 5%, transparent) 49% 52%, transparent 57%),
+      radial-gradient(ellipse 110% 27% at 53% 28%, transparent 54%, color-mix(in oklab, var(--foreground) 4%, transparent) 58% 61%, transparent 67%),
+      radial-gradient(circle at 50% 20%, color-mix(in oklab, var(--foreground) 11%, var(--background)) 0%, var(--background) 58%);
+    background-size: 120% 38rem, 135% 42rem, 150% 48rem, 100% 72rem;
+    background-repeat: repeat-y;
+    opacity: 0.72;
+    animation: marble-drift 18s ease-in-out infinite alternate;
   }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 20%, color-mix(in oklab, var(--foreground) 6%, transparent), transparent 38%);
+    filter: blur(34px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes marble-drift {
+  from { background-position: 0 0, 0 2rem, 0 4rem, 0 0; }
+  to { background-position: 3% 2rem, -3% 0, 2% 7rem, 0 1rem; }
+}
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--background);
+  animation: intro-screen-out 5.6s cubic-bezier(.76, 0, .24, 1) both;
+}
+
+.intro-marble {
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(ellipse 44% 12% at 50% 50%, color-mix(in oklab, var(--foreground) 14%, transparent), transparent 64%),
+    radial-gradient(ellipse 64% 20% at 50% 50%, transparent 47%, color-mix(in oklab, var(--foreground) 8%, transparent) 51% 54%, transparent 60%),
+    radial-gradient(ellipse 88% 28% at 50% 50%, transparent 55%, color-mix(in oklab, var(--foreground) 5%, transparent) 59% 62%, transparent 68%),
+    radial-gradient(circle at center, color-mix(in oklab, var(--foreground) 14%, var(--background)) 0%, var(--background) 62%);
+  filter: blur(9px);
+  animation: intro-water 7s ease-in-out both;
+}
+
+.intro-brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center;
+  animation: intro-brand-move 5.6s cubic-bezier(.76, 0, .24, 1) both;
+}
+
+.intro-title {
+  margin: 0;
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-size: clamp(3.7rem, 9vw, 8.8rem);
+  font-weight: 500;
+  line-height: .9;
+  text-align: center;
+  text-transform: uppercase;
+  animation: intro-title-in 1.8s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.intro-title::first-letter { color: var(--color-primary); }
+
+.intro-tagline {
+  display: flex;
+  gap: clamp(.75rem, 2vw, 2rem);
+  margin: 1.6rem 0 0;
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: clamp(.62rem, 1.1vw, .82rem);
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+  animation: intro-tagline-in 1.5s ease-out 1.25s both;
+}
+
+.intro-tagline i { opacity: .42; font-style: normal; }
+
+@keyframes intro-title-in {
+  from { opacity: 0; filter: blur(22px); transform: scale(.92) translateY(18px); }
+  to { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); }
+}
+
+@keyframes intro-tagline-in {
+  from { opacity: 0; filter: blur(12px); transform: translateY(16px); }
+  to { opacity: .78; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes intro-brand-move {
+  0%, 58% { transform: translate3d(0, 0, 0) scale(1); filter: blur(0); opacity: 1; }
+  100% { transform: translate3d(-41vw, -43vh, 0) scale(.22); filter: blur(3px); opacity: 0; }
+}
+
+@keyframes intro-screen-out {
+  0%, 68% { opacity: 1; backdrop-filter: blur(18px); }
+  100% { opacity: 0; backdrop-filter: blur(0); visibility: hidden; }
+}
+
+@keyframes intro-water {
+  0% { opacity: .3; transform: scale(.9); filter: blur(20px); }
+  45% { opacity: 1; }
+  100% { opacity: .35; transform: scale(1.12); filter: blur(4px); }
 }
 
 @utility marquee-track {
@@ -223,4 +312,5 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .intro-screen { display: none; }
 }
