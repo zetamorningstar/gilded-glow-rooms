@@ -99,6 +99,10 @@ export function ReviewsMarquee() {
 
   const lastX = useRef(0);
 
+  const onPointerEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
+    lastX.current = event.clientX;
+  };
+
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     dragging.current = true;
     velocity.current = 0;
@@ -114,8 +118,8 @@ export function ReviewsMarquee() {
       velocity.current = -delta;
     } else if (event.pointerType !== "touch") {
       // Sürüklemeden de fare hızına göre ileri/geri yönlenir
-      velocity.current += -delta * 0.06;
-      velocity.current = Math.max(-18, Math.min(18, velocity.current));
+      velocity.current += -delta * 0.045;
+      velocity.current = Math.max(-10, Math.min(10, velocity.current));
     }
   };
 
@@ -146,6 +150,7 @@ export function ReviewsMarquee() {
       <div
         className="relative cursor-grab touch-pan-y overflow-hidden active:cursor-grabbing [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]"
         onPointerDown={onPointerDown}
+        onPointerEnter={onPointerEnter}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
