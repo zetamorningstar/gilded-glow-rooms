@@ -45,7 +45,7 @@ function Index() {
   };
 
   return (
-    <main className="marble-water page-cinematic-reveal min-h-screen bg-background text-foreground">
+    <main className="marble-water min-h-screen bg-background text-foreground">
       <IntroSequence />
       {preview.overlay}
       <section

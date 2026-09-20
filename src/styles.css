@@ -210,10 +210,6 @@
   to { background-position: 3% 2rem, -3% 0, 2% 7rem, 0 1rem; }
 }
 
-.page-cinematic-reveal {
-  animation: page-focus 5.6s cubic-bezier(.22, 1, .36, 1) both;
-}
-
 .intro-screen {
   position: fixed;
   inset: 0;
@@ -288,7 +284,7 @@
 }
 
 @keyframes intro-brand-move {
-  0%, 58% { transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+  0%, 58% { transform: translate3d(0, 0, 0) scale(1); filter: blur(0); opacity: 1; }
   100% { transform: translate3d(-41vw, -43vh, 0) scale(.22); filter: blur(3px); opacity: 0; }
 }
 
@@ -301,11 +297,6 @@
   0% { opacity: .3; transform: scale(.9); filter: blur(20px); }
   45% { opacity: 1; }
   100% { opacity: .35; transform: scale(1.12); filter: blur(4px); }
-}
-
-@keyframes page-focus {
-  0%, 58% { filter: blur(16px); opacity: .25; }
-  100% { filter: blur(0); opacity: 1; }
 }
 
 @utility marquee-track {
